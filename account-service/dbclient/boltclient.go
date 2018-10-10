@@ -15,6 +15,7 @@ type IBoltClient interface {
 	OpenBoltDb()
 	QueryAccount(accountID string) (model.Account, error)
 	Seed()
+	Check() bool
 }
 
 // BoltClient : Implements the bolt interface.
@@ -96,4 +97,9 @@ func (bc *BoltClient) QueryAccount(accountID string) (model.Account, error) {
 	}
 
 	return account, nil
+}
+
+// Check : Naive healthcheck.
+func (bc *BoltClient) Check() bool {
+	return bc.boltDB != nil
 }

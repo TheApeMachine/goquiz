@@ -4,6 +4,10 @@ A simple quizzing application using Go and Vue.
 
 ## Setting up the environment
 
+### Requirements
+
+VirtualBox to host the Docker swarm.
+
 ```
 // To get an embedded key/value store up and running.
 go get -u github.com/boltdb/bolt
@@ -33,6 +37,9 @@ CGO_ENABLED=0 GOOS=linux go build -o account-service-linux-amd64
 ```
 // From root folder of the app.
 docker build -t theapemachine/account-service account-service
+
+// Create the swarm manager
+docker-machine create --driver virtualbox --virtualbox-cpu-count 2 --virtualbox-memory 2048 --virtualbox-disk-size 20000 swarm-manager-1
 ```
 
 ## Serving the backend
@@ -43,3 +50,9 @@ docker run --rm theapemachine/account-service
 ```
 
 ## Serving the frontend
+
+```
+cd ./frontend
+npm install
+npm run dev
+```
