@@ -21,6 +21,25 @@ go get -u github.com/stretchr/testify/mock
 go test ./...
 ```
 
+## Building the services
+
+```
+cd ./account-service
+CGO_ENABLED=0 GOOS=linux go build -o account-service-linux-amd64
+```
+
+## Deploying to local Docker swarm
+
+```
+// From root folder of the app.
+docker build -t theapemachine/account-service account-service
+```
+
 ## Serving the backend
+
+```
+// From root folder of the app.
+docker run --rm theapemachine/account-service
+```
 
 ## Serving the frontend
