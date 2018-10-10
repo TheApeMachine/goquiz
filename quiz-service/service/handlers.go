@@ -12,6 +12,25 @@ import (
 // DBClient : Setup an instance of our embedded key/value store.
 var DBClient dbclient.IBoltClient
 
+// GetQuizzes : Response implementation for getting a list of quizzes.
+func GetQuizzes(w http.ResponseWriter, r *http.Request) {
+	quizzes, err := DBClient.QueryQuizzes()
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	data, _ := json.Marshal(quizzes)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
+}
+
 // GetQuiz : Response implementation for getting a quiz.
 func GetQuiz(w http.ResponseWriter, r *http.Request) {
 	var quizID = mux.Vars(r)["quizID"]
@@ -24,6 +43,7 @@ func GetQuiz(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, _ := json.Marshal(quiz)
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 	w.Header().Set("Access-Control-Allow-Origin", "*")

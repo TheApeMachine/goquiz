@@ -13,6 +13,7 @@ import (
 // IBoltClient : Sets up an interface for the bolt embedded key/value store.
 type IBoltClient interface {
 	OpenBoltDb()
+	QueryQuizzes() ([]model.Quiz, error)
 	QueryQuiz(quizID string) (model.Quiz, error)
 	Seed()
 	Check() bool
@@ -72,6 +73,36 @@ func (bc *BoltClient) seedQuizzes() {
 func (bc *BoltClient) Seed() {
 	bc.initializeBucket()
 	bc.seedQuizzes()
+}
+
+// QueryQuizzes : Implement retrieval of a list of quizzes from the datastore.
+func (bc *BoltClient) QueryQuizzes() ([]model.Quiz, error) {
+	quizzes := []model.Quiz{}
+
+	err := bc.boltDB.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("QuizBucket"))
+
+		c := b.Cursor()
+
+		if c == nil {
+			return fmt.Errorf("No quizzes found")
+		}
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			quizzes = append(quizzes, model.Quiz{
+				ID:   string(k),
+				Name: string(v),
+			})
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return []model.Quiz{}, err
+	}
+
+	return quizzes, nil
 }
 
 // QueryQuiz : Implements a way to retrieve an Quiz by ID.

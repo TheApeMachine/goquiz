@@ -3,16 +3,16 @@ package main
 import (
 	"fmt"
 
-	"github.com/theapemachine/goquiz/account-service/dbclient"
-	"github.com/theapemachine/goquiz/account-service/service"
+	"github.com/theapemachine/goquiz/quiz-service/dbclient"
+	"github.com/theapemachine/goquiz/quiz-service/service"
 )
 
-var appName = "account-service"
+var appName = "quiz-service"
 
 func main() {
 	fmt.Printf("Starting %v\n", appName)
 	initializeBoltClient()
-	service.StartWebServer("6767")
+	service.StartWebServer("6768")
 }
 
 func initializeBoltClient() {

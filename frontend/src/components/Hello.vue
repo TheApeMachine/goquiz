@@ -1,5 +1,12 @@
 <template>
   <div class="hello">
+    <table class="table table-bordered table-hover">
+      <tbody>
+        <tr v-for="quiz in quizzes">
+          <td>{{ quiz.Name }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -13,7 +20,8 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js PWA',
-      account: null
+      account: null,
+      quizzes: []
     }
   },
 
@@ -21,6 +29,12 @@ export default {
     getAccount (id) {
       apiService.getAccount(id).then((data) => {
         this.account = data.data
+      })
+    },
+
+    getQuizzes () {
+      apiService.getQuizzes().then((data) => {
+        this.quizzes = data.data
       })
     }
   },
