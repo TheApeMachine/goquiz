@@ -1,16 +1,6 @@
 <template>
-  <div class="hello">
-    <table class="table table-bordered table-hover">
-      <tbody>
-        <tr v-for="quiz in quizzes">
-          <td>
-            <router-link :to="{name: 'quizzes', params: {id: quiz.id}}">
-              {{ quiz.name }}
-            </router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="quiz">
+    {{quiz.name}}
   </div>
 </template>
 
@@ -19,12 +9,11 @@ import {APIService} from '../APIService'
 const apiService = new APIService()
 
 export default {
-  name: 'hello',
+  name: 'quiz',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js PWA',
       account: null,
-      quizzes: []
+      quiz: null
     }
   },
 
@@ -35,17 +24,16 @@ export default {
       })
     },
 
-    getQuizzes () {
-      apiService.getQuizzes().then((data) => {
-        this.quizzes = data
-        console.log(data)
+    getQuiz (id) {
+      apiService.getQuiz(id).then((data) => {
+        this.quiz = data
       })
     }
   },
 
   mounted () {
     this.getAccount(10000)
-    this.getQuizzes()
+    this.getQuiz(this.$route.params.id)
   }
 }
 </script>

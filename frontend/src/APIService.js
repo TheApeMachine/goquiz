@@ -13,4 +13,9 @@ export class APIService {
     const url = `${API_URL}:${QUIZ_PORT}/quizzes`
     return axios.get(url).then(response => response.data)
   }
+
+  getQuiz (id) {
+    const url = `${API_URL}:${QUIZ_PORT}/quizzes/${id}`
+    return axios.get(url).then(response => response.data)
+  }
 }
