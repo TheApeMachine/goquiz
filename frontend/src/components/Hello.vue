@@ -3,7 +3,7 @@
     <table class="table table-bordered table-hover">
       <tbody>
         <tr v-for="quiz in quizzes">
-          <td>{{ quiz.Name }}</td>
+          <td>{{ quiz.name }}</td>
         </tr>
       </tbody>
     </table>
@@ -34,13 +34,14 @@ export default {
 
     getQuizzes () {
       apiService.getQuizzes().then((data) => {
-        this.quizzes = data.data
+        this.quizzes = data
       })
     }
   },
 
   mounted () {
     this.getAccount(10000)
+    this.getQuizzes()
   }
 }
 </script>

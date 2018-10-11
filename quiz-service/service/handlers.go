@@ -23,12 +23,7 @@ func GetQuizzes(w http.ResponseWriter, r *http.Request) {
 
 	data, _ := json.Marshal(quizzes)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
+	writeJSONResponse(w, http.StatusOK, data)
 }
 
 // GetQuiz : Response implementation for getting a quiz.
@@ -44,27 +39,24 @@ func GetQuiz(w http.ResponseWriter, r *http.Request) {
 
 	data, _ := json.Marshal(quiz)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
+	writeJSONResponse(w, http.StatusOK, data)
 }
 
+// HealthCheck : Endpoint handler to see the status of the service.
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	dbUp := DBClient.Check()
 
 	if dbUp {
 		data, _ := json.Marshal(healthCheckResponse{Status: "UP"})
-		writeJsonResponse(w, http.StatusOK, data)
+		writeJSONResponse(w, http.StatusOK, data)
 	} else {
 		data, _ := json.Marshal(healthCheckResponse{Status: "Database not accessible"})
-		writeJsonResponse(w, http.StatusServiceUnavailable, data)
+		writeJSONResponse(w, http.StatusServiceUnavailable, data)
 	}
 }
 
-func writeJsonResponse(w http.ResponseWriter, status int, data []byte) {
+// writeJSONResponse : Generic method to write data as a JSON response, including the needed headers.
+func writeJSONResponse(w http.ResponseWriter, status int, data []byte) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 	w.Header().Set("Access-Control-Allow-Origin", "*")

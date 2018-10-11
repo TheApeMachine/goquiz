@@ -47,14 +47,14 @@ func (bc *BoltClient) initializeBucket() {
 }
 
 func (bc *BoltClient) seedQuizzes() {
-	total := 100
+	total := 10
 
 	for i := 0; i < total; i++ {
 		key := strconv.Itoa(10000 + i)
 
 		acc := model.Quiz{
 			ID:   key,
-			Name: "Person_" + strconv.Itoa(i),
+			Name: "Quiz_" + strconv.Itoa(i),
 		}
 
 		jsonBytes, _ := json.Marshal(acc)
