@@ -1,6 +1,16 @@
 <template>
   <div class="quiz">
     {{quiz.name}}
+
+    <table class="table table-bordered table-hover">
+      <tbody>
+        <tr v-for="option in options">
+          <td>
+             {{ option.name }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -13,7 +23,8 @@ export default {
   data () {
     return {
       account: null,
-      quiz: null
+      quiz: null,
+      options: []
     }
   },
 
@@ -27,6 +38,7 @@ export default {
     getQuiz (id) {
       apiService.getQuiz(id).then((data) => {
         this.quiz = data
+        this.options = this.quiz.Options
       })
     }
   },

@@ -52,12 +52,26 @@ func (bc *BoltClient) seedQuizzes() {
 	for i := 0; i < total; i++ {
 		key := strconv.Itoa(10000 + i)
 
-		acc := model.Quiz{
-			ID:   key,
-			Name: "Quiz_" + strconv.Itoa(i),
+		var options []model.Option
+
+		for j := 0; j < 3; j++ {
+			option := model.Option{
+				ID:      strconv.Itoa(10000 + j),
+				QuizID:  key,
+				Name:    "Option_" + strconv.Itoa(j),
+				Correct: false,
+			}
+
+			options = append(options, option)
 		}
 
-		jsonBytes, _ := json.Marshal(acc)
+		quiz := model.Quiz{
+			ID:      key,
+			Name:    "Quiz_" + strconv.Itoa(i),
+			Options: options,
+		}
+
+		jsonBytes, _ := json.Marshal(quiz)
 
 		bc.boltDB.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte("QuizBucket"))
