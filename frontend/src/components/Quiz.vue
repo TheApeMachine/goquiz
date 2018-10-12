@@ -1,12 +1,15 @@
 <template>
   <div class="quiz">
-    {{quiz.name}}
+    <h1>{{quiz.name}}</h1>
+    <p>Question: {{quiz.step}}</p>
 
     <table class="table table-bordered table-hover">
       <tbody>
         <tr v-for="option in options">
           <td>
-             {{ option.name }}
+            <router-link :to="{name: 'quizzes', params: {id: quiz.id, step: next_step}}">
+              {{ option.name }}
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -24,6 +27,8 @@ export default {
     return {
       account: null,
       quiz: null,
+      step: 0,
+      next_step: 0,
       options: []
     }
   },
@@ -38,7 +43,7 @@ export default {
     getQuiz (id) {
       apiService.getQuiz(id).then((data) => {
         this.quiz = data
-        this.options = data.Steps[0].Options
+        this.options = data.Steps[this.$route.params.step].Options
       })
     }
   },
@@ -46,6 +51,8 @@ export default {
   mounted () {
     this.getAccount(10000)
     this.getQuiz(this.$route.params.id)
+    this.step = this.$route.params.step
+    this.next_step = this.$route.params.step + 1
   }
 }
 </script>
