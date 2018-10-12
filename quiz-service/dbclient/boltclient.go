@@ -53,22 +53,32 @@ func (bc *BoltClient) seedQuizzes() {
 		key := strconv.Itoa(10000 + i)
 
 		var options []model.Option
+		var steps []model.Step
 
 		for j := 0; j < 3; j++ {
-			option := model.Option{
-				ID:      strconv.Itoa(10000 + j),
-				QuizID:  key,
-				Name:    "Option_" + strconv.Itoa(j),
-				Correct: false,
+			for k := 0; k < 3; k++ {
+				option := model.Option{
+					ID:      strconv.Itoa(10000 + k),
+					Name:    "Option_" + strconv.Itoa(k),
+					Correct: false,
+				}
+
+				options = append(options, option)
 			}
 
-			options = append(options, option)
+			step := model.Step{
+				ID:       strconv.Itoa(10000 + j),
+				Position: j + 1,
+				Options:  options,
+			}
+
+			steps = append(steps, step)
 		}
 
 		quiz := model.Quiz{
-			ID:      key,
-			Name:    "Quiz_" + strconv.Itoa(i),
-			Options: options,
+			ID:    key,
+			Name:  "Quiz_" + strconv.Itoa(i),
+			Steps: steps,
 		}
 
 		jsonBytes, _ := json.Marshal(quiz)

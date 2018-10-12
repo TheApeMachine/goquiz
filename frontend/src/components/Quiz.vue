@@ -38,7 +38,7 @@ export default {
     getQuiz (id) {
       apiService.getQuiz(id).then((data) => {
         this.quiz = data
-        this.options = this.quiz.Options
+        this.options = data.Steps[0].Options
       })
     }
   },
