@@ -13,7 +13,7 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/quizzes/:id',
+      path: '/quizzes/:id/steps/:step',
       name: 'quizzes',
       component: Quiz,
       props: true

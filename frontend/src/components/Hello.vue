@@ -4,7 +4,7 @@
       <tbody>
         <tr v-for="quiz in quizzes">
           <td>
-            <router-link :to="{name: 'quizzes', params: {id: quiz.id}}">
+            <router-link :to="{name: 'quizzes', params: {id: quiz.id, step: 0}}">
               {{ quiz.name }}
             </router-link>
           </td>
